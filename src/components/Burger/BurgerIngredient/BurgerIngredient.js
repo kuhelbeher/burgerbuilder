@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import classes from './burgerIngredient.sass';
+import classes from './BurgerIngredient.sass';
 
 class BurgerIngredient extends Component {
 	render() {
@@ -22,6 +22,9 @@ class BurgerIngredient extends Component {
 			case ('meat'):
 				ingredient = <div className={classes.Meat}></div>;
 				break;
+			case ('cheese'):
+				ingredient = <div className={classes.Cheese}></div>;
+				break;
 			case ('salad'):
 				ingredient = <div className={classes.Salad}></div>;
 				break;
@@ -37,8 +40,8 @@ class BurgerIngredient extends Component {
 	};
 };
 
-burgerIngredient.propTypes = {
+BurgerIngredient.propTypes = {
 	type: PropTypes.string.isRequired
-};
+}
 
 export default BurgerIngredient;
