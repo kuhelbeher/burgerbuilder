@@ -7,8 +7,8 @@ import ContactData from './ContactData/ContactData';
 class Checkout extends Component {
   state = {
     ingredients: null,
-    price: 0
-  }
+    price: 0,
+  };
 
   constructor(props) {
     super(props);
@@ -23,28 +23,35 @@ class Checkout extends Component {
       }
     }
     this.state.ingredients = ingredients;
-    this.state.totalPrice =  price;
+    this.state.totalPrice = price;
   }
-  
 
   checkoutCanceledHandler = () => {
     this.props.history.goBack();
-  }
+  };
 
   checkoutContinuedHandler = () => {
     this.props.history.replace('/checkout/contact-data');
-  }
+  };
 
   render() {
     return (
       <div>
-        <CheckoutSummary 
+        <CheckoutSummary
           ingredients={this.state.ingredients}
           checkoutCanceled={this.checkoutCanceledHandler}
-          checkoutContinued={this.checkoutContinuedHandler} />
-        <Route 
-          path={this.props.match.path + '/contact-data'} 
-          render={(props) => (<ContactData ingredients={this.state.ingredients} price={this.state.totalPrice} {...props} />)} />
+          checkoutContinued={this.checkoutContinuedHandler}
+        />
+        <Route
+          path={this.props.match.path + '/contact-data'}
+          render={props => (
+            <ContactData
+              ingredients={this.state.ingredients}
+              price={this.state.totalPrice}
+              {...props}
+            />
+          )}
+        />
       </div>
     );
   }

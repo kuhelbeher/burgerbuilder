@@ -4,12 +4,14 @@ import classes from './NavigationItems.sass';
 import NavigationItem from './NavigationItem/NavigationItem';
 
 const navigationItems = () => {
-	return (
-		<ul className={classes.NavigationItems}>
-			<NavigationItem link="/" exact>Burger Builder</NavigationItem>
-			<NavigationItem link="/orders">Checkout</NavigationItem>
-		</ul>
-	);
+  return (
+    <ul className={classes.NavigationItems}>
+      <NavigationItem link="/" exact>
+        Burger Builder
+      </NavigationItem>
+      <NavigationItem link="/orders">Checkout</NavigationItem>
+    </ul>
+  );
 };
 
 export default navigationItems;
