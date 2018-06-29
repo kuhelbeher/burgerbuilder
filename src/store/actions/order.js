@@ -37,7 +37,7 @@ export const fetchOrdersSuccess = orders => ({
   orders,
 });
 
-export const fetchORdersFail = error => ({
+export const fetchOrdersFail = error => ({
   type: actionTypes.FETCH_ORDERS_FAIL,
   error,
 });
@@ -49,7 +49,7 @@ export const fetchOrdersStart = () => ({
 export const fetchOrders = (token, userId) => dispatch => {
   dispatch(fetchOrdersStart());
   const queryParams =
-    '?auth=' + token + '&orderBy="userId"&equalTo"' + userId + '"';
+    '?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"';
   axios
     .get('/orders.json' + queryParams)
     .then(res => {
@@ -63,6 +63,6 @@ export const fetchOrders = (token, userId) => dispatch => {
       dispatch(fetchOrdersSuccess(fetchedOrders));
     })
     .catch(err => {
-      dispatch(fetchORdersFail(err));
+      dispatch(fetchOrdersFail(err));
     });
 };
