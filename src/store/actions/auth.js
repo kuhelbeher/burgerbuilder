@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 import * as actionTypes from './actionTypes';
 
 export const authStart = () => ({
@@ -17,70 +15,34 @@ export const authFail = error => ({
   error,
 });
 
-export const checkAuthTimeout = expirationTime => dispatch => {
-  setTimeout(() => {
-    dispatch(logout());
-  }, expirationTime * 1000);
-};
+export const checkAuthTimeout = expirationTime => ({
+  type: actionTypes.AUTH_CHECK_TIMEOUT,
+  expirationTime,
+});
 
 export const logout = () => {
-  localStorage.removeItem('token');
-  localStorage.removeItem('expirationTime');
-  localStorage.removeItem('userId');
-  return { type: actionTypes.AUTH_LOGOUT };
+  // localStorage.removeItem('token');
+  // localStorage.removeItem('expirationTime');
+  // localStorage.removeItem('userId');
+  return { type: actionTypes.AUTH_INITIATE_LOGOUT };
 };
 
-export const auth = (email, password, isSignup) => dispatch => {
-  dispatch(authStart());
-  const authData = {
-    email,
-    password,
-    returnSecureToken: true,
-  };
-  let url =
-    'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyAb2Rydf9fBk0rJiZ-SzaF7TYWYvxcjakY';
-  if (!isSignup) {
-    url =
-      'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyAb2Rydf9fBk0rJiZ-SzaF7TYWYvxcjakY';
-  }
-  axios
-    .post(url, authData)
-    .then(response => {
-      localStorage.setItem('token', response.data.idToken);
-      const expirationTime = new Date(
-        new Date().getTime() + response.data.expiresIn * 1000,
-      );
-      localStorage.setItem('expirationTime', expirationTime);
-      localStorage.setItem('userId', response.data.localId);
-      dispatch(authSuccess(response.data.idToken, response.data.localId));
-      dispatch(checkAuthTimeout(response.data.expiresIn));
-    })
-    .catch(err => {
-      dispatch(authFail(err.response.data.error));
-    });
-};
+export const logoutSucceed = () => ({
+  type: actionTypes.AUTH_LOGOUT,
+});
+
+export const auth = (email, password, isSignup) => ({
+  type: actionTypes.AUTH_USER,
+  email,
+  password,
+  isSignup,
+});
 
 export const setAuthRedirectPath = path => ({
   type: actionTypes.SET_AUTH_REDIRECT_PATH,
   path,
 });
 
-export const authCheckState = () => dispatch => {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    dispatch(logout());
-  } else {
-    const expirationTime = new Date(localStorage.getItem('expirationTime'));
-    if (expirationTime >= new Date()) {
-      const userId = localStorage.getItem('userId');
-      dispatch(authSuccess(token, userId));
-      dispatch(
-        checkAuthTimeout(
-          (expirationTime.getTime() - new Date().getTime()) / 1000,
-        ),
-      );
-    } else {
-      dispatch(logout());
-    }
-  }
-};
+export const authCheckState = () => ({
+  type: actionTypes.AUTH_CHECK_STATE,
+});
